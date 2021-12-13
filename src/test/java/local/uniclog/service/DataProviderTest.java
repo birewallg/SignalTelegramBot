@@ -3,6 +3,7 @@ package local.uniclog.service;
 import com.google.gson.reflect.TypeToken;
 import local.uniclog.model.TelegramUser;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +20,7 @@ class DataProviderTest {
     }
 
     @Test
-    @Tag("DataProvider save/load тест с обьектом")
+    @DisplayName("DataProvider save/load тест с обьектом")
     void dataProviderTestWithObject() {
         var user = TelegramUser.builder().id(1231231231d).userName("Name").subscriber(true).build();
         var json = data.save(user);
@@ -31,7 +32,7 @@ class DataProviderTest {
     }
 
     @Test
-    @Tag("DataProvider save/load тест со списком")
+    @DisplayName("DataProvider save/load тест со списком")
     void dataProviderTestWithObjectList() {
         var userList = List.of(
                 TelegramUser.builder().id(1231231231d).userName("Name1").subscriber(true).build(),
