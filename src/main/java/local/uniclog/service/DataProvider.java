@@ -14,7 +14,7 @@ public class DataProvider {
         return new Gson().fromJson(json, list);
     }
 
-    public <T>T load(String json, Type list) {
-        return new Gson().fromJson(json, list);
+    public <T>T load(String json, Type type) {
+        return new Gson().fromJson(json, type);
     }
 }
