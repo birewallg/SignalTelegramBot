@@ -3,13 +3,12 @@ package local.uniclog.service;
 import com.google.gson.reflect.TypeToken;
 import local.uniclog.model.TelegramUser;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -19,11 +18,28 @@ public class DataManagement {
     private static final String filePath = "data.json";
 
     @Getter
-    @Setter
-    private List<TelegramUser> data = new LinkedList<>();
+    private ArrayList<TelegramUser> data;
 
     public DataManagement() {
+        data = new ArrayList<>();
         this.load();
+    }
+
+    public void setData(ArrayList<TelegramUser> data) {
+        this.data = data;
+        this.save();
+    }
+
+    public boolean add(TelegramUser model) {
+        this.data.add(model);
+        return this.save() || !data.remove(model);
+    }
+
+    public boolean remove(TelegramUser model) {
+        new ArrayList<>(data).stream()
+                .filter(user -> user.getId() == model.getId())
+                .forEach(user -> data.remove(user));
+        return this.save();
     }
 
     public boolean save() {
