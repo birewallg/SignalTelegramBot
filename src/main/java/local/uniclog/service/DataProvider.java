@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 
 import java.lang.reflect.Type;
 
+@Deprecated
 public class DataProvider {
 
     protected <T>String save(T object) {
