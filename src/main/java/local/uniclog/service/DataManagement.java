@@ -15,13 +15,14 @@ import java.util.List;
 @Slf4j
 public class DataManagement {
     // todo увести в конфиг
-    private static final String filePath = "data.json";
+    private final String filePath;
 
     @Getter
     private ArrayList<TelegramUser> data;
 
-    public DataManagement() {
-        data = new ArrayList<>();
+    public DataManagement(String path) {
+        this.filePath = path;
+        this.data = new ArrayList<>();
         this.load();
     }
 
@@ -37,7 +38,7 @@ public class DataManagement {
 
     public boolean remove(TelegramUser model) {
         new ArrayList<>(data).stream()
-                .filter(user -> user.getId() == model.getId())
+                .filter(user -> user.getId().equals(model.getId()))
                 .forEach(user -> data.remove(user));
         return this.save();
     }

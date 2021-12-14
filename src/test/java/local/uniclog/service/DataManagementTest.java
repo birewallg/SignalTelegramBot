@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DataManagementTest {
-    private final DataManagement management = new DataManagement();
+    private final DataManagement management = new DataManagement("data_test.json");
     private final ArrayList<TelegramUser> data = new ArrayList<>();
 
     @BeforeEach
