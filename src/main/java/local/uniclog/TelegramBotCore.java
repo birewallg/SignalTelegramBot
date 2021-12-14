@@ -2,7 +2,7 @@ package local.uniclog;
 
 import local.uniclog.model.Config;
 import local.uniclog.model.TelegramUser;
-import local.uniclog.service.DataManagement;
+import local.uniclog.service.BadLogicService;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -20,17 +20,10 @@ public class TelegramBotCore extends TelegramLongPollingBot {
     private final String BOT_NAME = config.getName();
     private final String BOT_TOKEN = config.getToken();
 
-    private final DataManagement data = new DataManagement("data.json");
+    public BadLogicService service;
 
-    /**
-     * отправить сообщение всем подписчикам
-     *
-     * @param msg текст сообщения
-     */
-    public void sendQuery(String msg) {
-        data.getData().stream()
-                .filter(TelegramUser::getSubscriber)
-                .forEach(obs -> sendMessage(obs.getId(), msg));
+    public TelegramBotCore() {
+        service = new BadLogicService(this);
     }
 
     @Override
@@ -45,32 +38,7 @@ public class TelegramBotCore extends TelegramLongPollingBot {
             login = update.getMessage().getFrom().getUserName();
         }
         log.info(message);
-        messageSeparator(update.getMessage().getChatId(), login, message);
-    }
-
-    /**
-     * разбор входящих сообщений
-     *
-     * @param id      id пользователя
-     * @param message текст сообщения
-     */
-    public void messageSeparator(Long id, String login, String message) {
-        switch (message) {
-            case "/sub" -> {
-                TelegramUser user = null;
-                for (TelegramUser u : data.getData()) {
-                    if (u.getId().equals(id)) {
-                        user = u;
-                        break;
-                    }
-                }
-                if (user != null)
-                    user.setSubscriber(!user.getSubscriber());
-                else
-                    user = TelegramUser.builder().id(id).userName(login).subscriber(true).build();
-                data.update(user);
-            }
-        }
+        service.messageSeparator(update.getMessage().getChatId(), login, message);
     }
 
     /**
@@ -89,6 +57,17 @@ public class TelegramBotCore extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             log.error(e.getMessage());
         }
+    }
+
+    /**
+     * Отправить сообщение всем подписчикам
+     *
+     * @param msg текст сообщения
+     */
+    public void sendMessageForAllSubscribers(String msg) {
+        service.getDataManagement().getData().stream()
+                .filter(TelegramUser::getSubscriber)
+                .forEach(obs -> sendMessage(obs.getId(), msg));
     }
 
     @Override

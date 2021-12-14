@@ -7,6 +7,7 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 @Slf4j
 public class MainApp {
+    public static TelegramBotCore telegramBotCore;
 
     public static void main(String[] args) {
         new MainApp().action();
@@ -17,9 +18,6 @@ public class MainApp {
         telegramBotInit();
     }
 
-    /* telegram bot section START */
-    public static TelegramBotCore telegramBotCore;
-
     public void telegramBotInit() {
         try {
             var telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
@@ -28,9 +26,4 @@ public class MainApp {
             e.printStackTrace();
         }
     }
-
-    public void sendMessage(String msg) {
-        telegramBotCore.sendQuery(msg);
-    }
-    /* telegram bot section END */
 }
