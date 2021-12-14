@@ -10,7 +10,7 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public class TelegramUser {
-    private double id;
+    private Long id;
     private String userName;
-    private boolean subscriber;
+    private Boolean subscriber;
 }
