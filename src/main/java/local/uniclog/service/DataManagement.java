@@ -1,5 +1,6 @@
 package local.uniclog.service;
 
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import local.uniclog.model.TelegramUser;
 import lombok.Getter;
@@ -10,7 +11,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 @Slf4j
 public class DataManagement {
@@ -44,7 +44,7 @@ public class DataManagement {
 
     public boolean save() {
         try (var writer = new FileWriter(filePath)) {
-            writer.write(new DataProvider().save(data));
+            writer.write(new Gson().toJson(data));
             return true;
         } catch (IOException e) {
             log.error(e.getMessage());
@@ -53,15 +53,9 @@ public class DataManagement {
     }
 
     public boolean load() {
-        try (var reader = new FileReader(filePath);
-             var scanner = new Scanner(reader)) {
-            var json = new StringBuilder();
-            while (scanner.hasNext())
-                json.append(scanner.next());
-            this.data = new DataProvider().load(
-                    json.toString(),
-                    new TypeToken<List<TelegramUser>>() {
-                    }.getType());
+        try (var reader = new FileReader(filePath)) {
+            this.data = new Gson().fromJson(reader, new TypeToken<List<TelegramUser>>() {
+            }.getType());
             return true;
         } catch (IOException e) {
             log.error(e.getMessage());
