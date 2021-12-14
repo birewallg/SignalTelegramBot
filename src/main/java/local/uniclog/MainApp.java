@@ -14,6 +14,7 @@ public class MainApp {
 
     public void action() {
         log.info("MainApp init");
+        telegramBotInit();
     }
 
     /* telegram bot section START */
@@ -21,7 +22,7 @@ public class MainApp {
 
     public void telegramBotInit() {
         try {
-            TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
+            var telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
             telegramBotsApi.registerBot(telegramBotCore = new TelegramBotCore());
         } catch (TelegramApiException e) {
             e.printStackTrace();
