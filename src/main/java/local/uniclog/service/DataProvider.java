@@ -10,8 +10,8 @@ public class DataProvider {
         return new Gson().toJson(object);
     }
 
-    protected <T>T load(String json, Class<T> list) {
-        return new Gson().fromJson(json, list);
+    protected <T>T load(String json, T type) {
+        return new Gson().fromJson(json, (Type) type);
     }
 
     protected <T>T load(String json, Type type) {
