@@ -11,7 +11,7 @@ class ConfigTest {
      */
     @Test
     void configTest() {
-        Config config = new Config("config_test.json", true);
+        Config config = new Config("config_test.json");
         assertEquals(config.getName(), "name");
         assertEquals(config.getToken(), "token");
     }
