@@ -43,6 +43,15 @@ public class DataManagement {
         return this.save();
     }
 
+    public boolean update(TelegramUser model) {
+        new ArrayList<>(data).stream()
+                .filter(user -> user.getId().equals(model.getId()))
+                .forEach(user -> {
+                    data.remove(user);
+                });
+        return this.add(model);
+    }
+
     public boolean save() {
         try (var writer = new FileWriter(filePath)) {
             writer.write(new Gson().toJson(data));
