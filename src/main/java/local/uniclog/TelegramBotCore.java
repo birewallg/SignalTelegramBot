@@ -29,16 +29,18 @@ public class TelegramBotCore extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         String message;
-        String login;
+        String login = "none";
+        Long id = 0L;
         if (update.getEditedMessage() != null) {
             message = update.getEditedMessage().getText();
-            login = update.getEditedMessage().getFrom().getUserName();
+            id = update.getEditedMessage().getChatId();
         } else {
             message = update.getMessage().getText();
             login = update.getMessage().getFrom().getUserName();
+            id = update.getMessage().getChatId();
         }
         log.info(message);
-        service.messageSeparator(update.getMessage().getChatId(), login, message);
+        service.messageSeparator(id, login, message);
     }
 
     /**
