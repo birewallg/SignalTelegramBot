@@ -51,16 +51,19 @@ public class BadLogicService {
      * @param message сообщение
      */
     private void check(String message) {
-        String regex = "(\\(.{6}\\))(.*)(\\(.*\\))";
+        String regex = "(\\(.{6,8}\\))(.*)(\\(.*\\))";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(message);
         if (matcher.find() && message.contains("\u2705")) {
             checkCount++;
-            bot.sendMessageForAllSubscribers("checkCount = " + checkCount);
+            bot.sendMessageForAllSubscribers("check = " + checkCount);
             if (checkCount == 9) {
                 bot.sendMessageForAllSubscribers("9 trigger!");
                 checkCount = 0;
             }
-        } else checkCount = 0;
+        } else {
+            checkCount = 0;
+            bot.sendMessageForAllSubscribers("check = " + checkCount);
+        }
     }
 }
