@@ -17,6 +17,10 @@ public class Config {
     private String token;
 
     public Config(String path) {
+        load(path);
+    }
+
+    private void load(String path) {
         if (path != null) {
             try (var reader = new FileReader(path)) {
                 var config = new Gson().fromJson(reader, Config.class);
